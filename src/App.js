@@ -29,7 +29,6 @@ export const App = () => {
     return hero_name.toLocaleLowerCase().includes(searchRobots);
   });
 
-  console.log(filterRobots);
   return (
     <div className="App">
       <div className="App-title">Hero Mobile Legends</div>
