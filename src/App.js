@@ -31,7 +31,9 @@ export const App = () => {
 
   return (
     <div className="App">
-      <div className="App-title">Hero Mobile Legends</div>
+      <div className="App-title mt-10 text-3xl text-white font-bold uppercase">
+        Hero Mobile Legends
+      </div>
       <SearchBox
         className="monsters-search-box"
         search={searchRobot}
