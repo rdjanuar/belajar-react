@@ -7,7 +7,7 @@ export class Cardlist extends Component {
     return (
       <div className="card-list">
         {monsters.map((monster) => {
-          return <Card key={monster.id} monster={monster} />;
+          return <Card key={monster.hero_id} monster={monster} />;
         })}
       </div>
     );

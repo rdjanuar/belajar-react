@@ -1,80 +1,44 @@
-import { Component } from "react";
 import axios from "axios";
+
+import React, { useState, useEffect } from "react";
 
 import { Cardlist } from "./components/card-list/card-list.component";
 import { SearchBox } from "./components/search-box/search-box.components";
 
 import "./App.css";
 
-// export const App = () => {
-//   return (
-//     <div className="App">
-//       <div className="App-title">Monster Roledex</div>
-//       {/* <SearchBox
-//         className="monsters-search-box"
-//         search={onSearchChange}
-//         placeholder="Search Monster..."
-//       />
-//       <Cardlist monsters={filterMonster} /> */}
-//     </div>
-//   );
-// };
+export const App = () => {
+  const [heroName, setHeroName] = useState([]);
+  const [searchRobots, setSearchRobots] = useState("");
 
-export class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      monsters: [],
-      searchField: "",
+  useEffect(() => {
+    const getData = async () => {
+      const robotsData = await axios.get(
+        "https://api.dazelpro.com/mobile-legends/hero"
+      );
+      setHeroName(robotsData.data.hero);
     };
-  }
+    getData();
+  }, []);
 
-  componentDidMount() {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const url = await axios.get(
-          "https://jsonplaceholder.typicode.com/users"
-        );
-        resolve(
-          this.setState(() => {
-            return {
-              monsters: url.data,
-            };
-          })
-        );
-      } catch (error) {
-        reject(error.message);
-      }
-    });
-  }
-
-  onSearchChange = (event) => {
-    const searchField = event.target.value.toLocaleLowerCase();
-    this.setState(() => {
-      return {
-        searchField,
-      };
-    });
+  const searchRobot = (event) => {
+    return setSearchRobots(String(event.target.value).toLocaleLowerCase());
   };
 
-  render() {
-    const { monsters, searchField } = this.state;
-    const { onSearchChange } = this;
+  const filterRobots = heroName.filter(({ hero_name }) => {
+    return hero_name.toLocaleLowerCase().includes(searchRobots);
+  });
 
-    const filterMonster = monsters.filter(({ name }) => {
-      return name.toLocaleLowerCase().includes(searchField);
-    });
-
-    return (
-      <div className="App">
-        <div className="App-title">Monster Roledex</div>
-        <SearchBox
-          className="monsters-search-box"
-          search={onSearchChange}
-          placeholder="Search Monster..."
-        />
-        <Cardlist monsters={filterMonster} />
-      </div>
-    );
-  }
-}
+  console.log(filterRobots);
+  return (
+    <div className="App">
+      <div className="App-title">Hero Mobile Legends</div>
+      <SearchBox
+        className="monsters-search-box"
+        search={searchRobot}
+        placeholder="Search Hero..."
+      />
+      <Cardlist monsters={filterRobots} />
+    </div>
+  );
+};
